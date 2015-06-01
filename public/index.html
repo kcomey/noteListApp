@@ -15,7 +15,7 @@
       <thead>
         <tr>
           <th>Note ID</th><th>Note Message</th><th>Note Author</th>
-          <th>Action</th>
+          <th>Action</th><th>&nbsp;</th>
         </tr>
       </thead>
       <tbody>
@@ -25,11 +25,16 @@
           <td><input class="form-control" data-ng-model="note.author"></td>
           <td><button class="btn btn-primary" data-ng-click="addNote()">
             Add Note</button></td>
+          <td><button class="btn btn-info" data-ng-click="update()">
+            Update</button></td>
         </tr>
         <tr data-ng-repeat="note in notelist">
           <td>{{ note.id }}</td>
           <td>{{ note.note }}</td>
           <td>{{ note.author }}</td>
+          <td><button class="btn btn-danger" data-ng-click="remove(note._id)">Remove</button></td>
+          <td><button class="btn btn-warning" data-ng-click="edit(note._id)">
+            Edit</button></td>
         </tr>
 
       </tbody>
