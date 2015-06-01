@@ -1,0 +1,42 @@
+<!DOCTYPE>
+<html data-ng-app = "myApp">
+<head>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+<title>Note List App</title>
+</head>
+<body>
+  <div class="container" data-ng-controller="AppCtrl">
+    <h1>Note List App</h1>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Note ID</th><th>Note Message</th><th>Note Author</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><input class="form-control" data-ng-model="note.id"></td>
+          <td><input class="form-control" data-ng-model="note.note"></td>
+          <td><input class="form-control" data-ng-model="note.author"></td>
+          <td><button class="btn btn-primary" data-ng-click="addNote()">
+            Add Note</button></td>
+        </tr>
+        <tr data-ng-repeat="note in notelist">
+          <td>{{ note.id }}</td>
+          <td>{{ note.note }}</td>
+          <td>{{ note.author }}</td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.js">
+</script>
+<script src="controllers/controller.js"></script>
+</body>
+</html>
