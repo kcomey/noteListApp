@@ -15,11 +15,38 @@ describe('AppController', function() {
     	});
 	}));
 
+  // Works
+  it('After note is deleted, notelist.length should be one',
+    function() {
+    httpBackend.expectGET('/api/notes')
+      .respond(200, [{_id: 1, note: 'This is test 1', author: 'Kendall'},
+        {_id: 2, note: 'This is test 2', author: 'Morgan'}]);
+    httpBackend.flush();
+
+    expect(scope.notelist.length).toEqual(2);
+
+    scope.remove(1);
+
+    httpBackend.expectDELETE('/api/notes/1')
+      .respond(200, [{id: 2, note: 'This is test 2', author: 'Morgan'}]);
+    httpBackend.flush();
+
+    expect(scope.notelist.length).toEqual(1);
+  });
+
+  // Works
   it('After note is added, notelist.length should be one', function() {
     httpBackend.expectGET('/api/notes')
-      .respond(200, [{id: 1}, {id: 2}]);
+      .respond(200, []);
     httpBackend.flush();
-    expect(scope.note.notelist).toBeUndefined();
+
+    scope.addNote({note: 'This is test', author: 'Kendall'});
+
+    httpBackend.expectPOST('/api/notes')
+      .respond(200, [{note: 'This is test', author: 'Kendall'}]);
+    httpBackend.flush();
+
+    expect(scope.notelist.length).toEqual(1);
   });
 
   // Works
@@ -27,14 +54,13 @@ describe('AppController', function() {
     httpBackend.expectGET('/api/notes')
       .respond(200, []);
     httpBackend.flush();
-    scope.addNote({id: 2, note: 'This is test', author: 'Kendall'});
-    expect(scope.note.notelist).toBeUndefined();
+    expect(scope.notelist.length).toEqual(0);
   });
 
   // This test works
   it('greet should return My Note Service', function() {
     httpBackend.expectGET('/api/notes')
-      .respond(200, {});
+      .respond(200);
     httpBackend.flush();
     expect(scope.greet).toEqual('My Note Service');
   });
