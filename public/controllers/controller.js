@@ -2,47 +2,50 @@ var myApp = angular.module('myApp', []);
 
 myApp.controller('AppCtrl', ['$scope', '$http',
   function ($scope, $http) {
-    console.log("Hello from controller");
     $scope.greet = "My Note Service";
 
-  var refresh = function() {
     $http.get('/api/notes').success(function(response) {
-      console.log('I got the data');
       $scope.notelist = response;
+      $scope.note = "";
+    });
+
+  $scope.addNote = function() {
+    $http.post('/api/notes', $scope.note).success(function(response) {
+      console.log(response);
+      $scope.notelist.push(response);
       $scope.note = "";
     });
   };
 
-  refresh();
-
-  $scope.addNote = function() {
-    console.log($scope.note);
-    $http.post('/api/notes', $scope.note).success(function(response) {
-      console.log(response);
-      refresh();
-    });
-  };
-
   $scope.remove = function(id) {
-    console.log(id);
     $http.delete('/api/notes/' + id).success(function(response) {
-      refresh();
+      for(var i = 0; i < $scope.notelist.length; i++) {
+        if($scope.notelist[i]._id === id) {
+          $scope.notelist.splice(i, 1);
+          break;
+        }
+      }
     });
   };
 
   $scope.edit = function(id) {
-    console.log(id);
     $http.get('/api/notes/' + id).success(function(response) {
       $scope.note = response;
     });
   };
 
   $scope.update = function() {
-    console.log($scope.note._id);
     $http.put('/api/notes/' + $scope.note._id, $scope.note)
       .success(function(response) {
-        refresh();
-      });
+      for(var i = 0; i < $scope.notelist.length; i++) {
+        if($scope.notelist[i]._id === response._id) {
+          $scope.notelist[i].note = response.note;
+          $scope.notelist[i].author = response.author;
+          $scope.note = "";
+          break;
+        }
+      }
+    });
   };
 
   $scope.deselect = function() {
