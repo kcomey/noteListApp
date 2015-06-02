@@ -3,16 +3,17 @@ var myApp = angular.module('myApp', []);
 myApp.controller('AppCtrl', ['$scope', '$http',
   function ($scope, $http) {
     console.log("Hello from controller");
+    $scope.greet = "My Note Service";
 
-var refresh = function() {
-  $http.get('/api/notes').success(function(response) {
-    console.log('I got the data');
-    $scope.notelist = response;
-    $scope.note = "";
-  });
-};
+  var refresh = function() {
+    $http.get('/api/notes').success(function(response) {
+      console.log('I got the data');
+      $scope.notelist = response;
+      $scope.note = "";
+    });
+  };
 
-refresh();
+  refresh();
 
   $scope.addNote = function() {
     console.log($scope.note);
@@ -40,9 +41,12 @@ refresh();
     console.log($scope.note._id);
     $http.put('/api/notes/' + $scope.note._id, $scope.note)
       .success(function(response) {
-        $scope.note = response;
         refresh();
       });
+  };
+
+  $scope.deselect = function() {
+    $scope.note = "";
   };
 
 }]);

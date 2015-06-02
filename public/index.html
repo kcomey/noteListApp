@@ -10,7 +10,7 @@
 </head>
 <body>
   <div class="container" data-ng-controller="AppCtrl">
-    <h1>Note List App</h1>
+    <h2>{{ greet }}</h2>
     <table class="table">
       <thead>
         <tr>
@@ -26,7 +26,8 @@
           <td><button class="btn btn-primary" data-ng-click="addNote()">
             Add Note</button></td>
           <td><button class="btn btn-info" data-ng-click="update()">
-            Update</button></td>
+            Update</button>&nbsp;&nbsp;<button class="btn btn-info"
+            data-ng-click="deselect()">Clear</button></td>
         </tr>
         <tr data-ng-repeat="note in notelist">
           <td>{{ note.id }}</td>
