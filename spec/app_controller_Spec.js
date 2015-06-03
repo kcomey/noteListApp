@@ -15,7 +15,34 @@ describe('AppController', function() {
     	});
 	}));
 
-  // Works
+  // Tests the update
+  it('If note is updated, notelist.length should stay the same, not increase',
+    function() {
+    httpBackend.expectGET('/api/notes')
+      .respond(200, [{_id: 1, note: 'This is test 1', author: 'Kendall'},
+        {_id: 2, note: 'This is test 2', author: 'Morgan'}]);
+    httpBackend.flush();
+
+    expect(scope.notelist.length).toEqual(2);
+
+    scope.edit(1);
+    scope.note = {_id: 1, note: 'Change the text'};
+    scope.update();
+
+    httpBackend.expectGET('/api/notes/1')
+      .respond(200, [{_id: 1, note: 'Change the text', author: 'Kendall'},
+        {_id: 2, note: 'This is test 2', author: 'Morgan'}]);
+
+
+    httpBackend.expectPUT('/api/notes/1')
+      .respond(200, [{_id: 1, note: 'Change the text', author: 'Kendall'},
+        {_id: 2, note: 'This is test 2', author: 'Morgan'}]);
+    httpBackend.flush();
+
+    expect(scope.notelist.length).toEqual(2);
+  });
+
+  // Tests delete
   it('After note is deleted, notelist.length should be one',
     function() {
     httpBackend.expectGET('/api/notes')
@@ -34,7 +61,7 @@ describe('AppController', function() {
     expect(scope.notelist.length).toEqual(1);
   });
 
-  // Works
+  // Tests add note
   it('After note is added, notelist.length should be one', function() {
     httpBackend.expectGET('/api/notes')
       .respond(200, []);
@@ -49,7 +76,7 @@ describe('AppController', function() {
     expect(scope.notelist.length).toEqual(1);
   });
 
-  // Works
+  // Test empty state
   it('Before note is added, notelist.length should be zero', function() {
     httpBackend.expectGET('/api/notes')
       .respond(200, []);
@@ -57,7 +84,7 @@ describe('AppController', function() {
     expect(scope.notelist.length).toEqual(0);
   });
 
-  // This test works
+  // Tests HTML
   it('greet should return My Note Service', function() {
     httpBackend.expectGET('/api/notes')
       .respond(200);
